@@ -28,6 +28,7 @@ export const fetchData = async searchQuery => {
     const dataImg = {
       img: data.hits,
       isLastPage: page > Math.ceil(data.totalHits / per_page),
+      totalHits: data.totalHits,
     };
     page += 1;
 

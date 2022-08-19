@@ -32,7 +32,7 @@ async function onSubmitClick(evt) {
     refs.btnLoadMore.classList.remove('is-visible');
 
     const dataImg = await fetchData(searchQuery);
-    const { img } = dataImg;
+    const { img, totalHits } = dataImg;
 
     if (img.length === 0) {
       refs.btnLoadMore.classList.remove('is-visible');
@@ -41,13 +41,15 @@ async function onSubmitClick(evt) {
       );
     }
 
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
     refs.gallery.innerHTML = buildGalleryMarkup(img);
     refs.btnLoadMore.classList.add('is-visible');
 
-    new SimpleLightbox('.gallery a', {
+    const lightbox = new SimpleLightbox('.gallery a', {
       captionsData: 'alt',
       captionDelay: 250,
     });
+    lightbox.refresh();
   } catch (error) {
     console.log(error);
   }
