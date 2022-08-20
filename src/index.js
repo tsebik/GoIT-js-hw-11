@@ -29,6 +29,8 @@ async function onSubmitClick(evt) {
   try {
     searchQuery = refs.form.elements.searchQuery.value.trim();
 
+    refs.form.elements.searchQuery.value = '';
+
     if (searchQuery === '') {
       Notiflix.Notify.info('Please enter something');
       return;
