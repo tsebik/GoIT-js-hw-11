@@ -45,11 +45,7 @@ async function onSubmitClick(evt) {
     refs.gallery.innerHTML = buildGalleryMarkup(img);
     refs.btnLoadMore.classList.add('is-visible');
 
-    const lightbox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
-    lightbox.refresh();
+    makeLightbox();
   } catch (error) {
     console.log(error);
   }
@@ -71,4 +67,15 @@ async function onLoadMoreClick() {
   } catch (error) {
     console.log(error.message);
   }
+}
+
+function makeLightbox(evt) {
+  evt.preventDefault();
+
+  const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+
+  lightbox.refresh();
 }
