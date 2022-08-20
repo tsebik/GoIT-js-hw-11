@@ -27,13 +27,13 @@ export const fetchData = async searchQuery => {
 
     const dataImg = {
       img: data.hits,
-      isLastPage: page > Math.ceil(data.totalHits / per_page),
+      isLastPage: page > data.totalHits / per_page,
       totalHits: data.totalHits,
     };
     page += 1;
 
     return dataImg;
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };

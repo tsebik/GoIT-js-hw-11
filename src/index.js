@@ -16,6 +16,11 @@ let searchQuery = '';
 refs.form.addEventListener('submit', onSubmitClick);
 refs.btnLoadMore.addEventListener('click', onLoadMoreClick);
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 async function onSubmitClick(evt) {
   evt.preventDefault();
 
@@ -32,7 +37,15 @@ async function onSubmitClick(evt) {
     refs.btnLoadMore.classList.remove('is-visible');
 
     const dataImg = await fetchData(searchQuery);
-    const { img, totalHits } = dataImg;
+    const { img, totalHits, isLastPage } = dataImg;
+
+    if (isLastPage) {
+      console.log(isLastPage);
+      refs.btnLoadMore.classList.remove('is-visible');
+      Notiflix.Notify.warning(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
 
     if (img.length === 0) {
       refs.btnLoadMore.classList.remove('is-visible');
@@ -47,10 +60,6 @@ async function onSubmitClick(evt) {
     refs.gallery.innerHTML = buildGalleryMarkup(img);
     refs.btnLoadMore.classList.add('is-visible');
 
-    const lightbox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
     lightbox.refresh();
   } catch (error) {
     console.log(error);
@@ -59,10 +68,9 @@ async function onSubmitClick(evt) {
 
 async function onLoadMoreClick() {
   try {
+    lightbox.refresh();
     const dataImg = await fetchData(searchQuery);
     const { img, isLastPage } = dataImg;
-
-    refs.gallery.insertAdjacentHTML('beforeend', buildGalleryMarkup(img));
 
     if (isLastPage) {
       refs.btnLoadMore.classList.remove('is-visible');
@@ -70,7 +78,9 @@ async function onLoadMoreClick() {
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
+
+    refs.gallery.insertAdjacentHTML('beforeend', buildGalleryMarkup(img));
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 }
