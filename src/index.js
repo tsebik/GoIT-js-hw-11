@@ -39,6 +39,8 @@ async function onSubmitClick(evt) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+
+      return;
     }
 
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
